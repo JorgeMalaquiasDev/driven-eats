@@ -16,10 +16,8 @@ function selecionarOpcao(opcao) {
         let icon = document.querySelector(" .secaoSelecionada .selecionado ion-icon");
         icon.classList.add("hidden");
         opcaoJaSelecionada.classList.remove("selecionado");
-        opcaoJaSelecionada.classList.remove("fecharPedido");
     }
     opcao.classList.add("selecionado");
-    opcao.classList.add("fecharPedido");
     let icon = document.querySelector(" .secaoSelecionada .selecionado ion-icon");
     icon.classList.remove("hidden");
     opcao.parentNode.parentNode.classList.remove("secaoSelecionada");
@@ -39,19 +37,21 @@ function verificarSeFoiSelecionadoMinimoDeProdutos() {
 }
 
 function confirmarPedido() {
+    let itensSelecionados = document.querySelectorAll(".foodOption.selecionado");
+    if (itensSelecionados.length < 3) {
+        return;
+    }
+
     document.querySelector(".confirmingOrder").classList.remove("hidden");
 
-    item1 = document.querySelector(".fecharPedido > div:nth-child(2)").innerHTML;
-    preco1 = document.querySelector(".fecharPedido > div:nth-child(4)").innerHTML;
-    document.querySelector(".fecharPedido").classList.remove("fecharPedido");
+    item1 = itensSelecionados[0].querySelector("div:nth-child(2)").innerHTML;
+    preco1 = itensSelecionados[0].querySelector("div:nth-child(4)").innerHTML;
 
-    item2 = document.querySelector(" .fecharPedido > div:nth-child(2)").innerHTML;
-    preco2 = document.querySelector(" .fecharPedido > div:nth-child(4)").innerHTML;
-    document.querySelector(".fecharPedido").classList.remove("fecharPedido");
+    item2 = itensSelecionados[1].querySelector("div:nth-child(2)").innerHTML;
+    preco2 = itensSelecionados[1].querySelector("div:nth-child(4)").innerHTML;
 
-    item3 = document.querySelector(" .fecharPedido > div:nth-child(2)").innerHTML;
-    preco3 = document.querySelector(" .fecharPedido > div:nth-child(4)").innerHTML;
-    document.querySelector(".fecharPedido").classList.remove("fecharPedido");
+    item3 = itensSelecionados[2].querySelector("div:nth-child(2)").innerHTML;
+    preco3 = itensSelecionados[2].querySelector("div:nth-child(4)").innerHTML;
 
     precoTotal = 'R$ ' + (Number(preco1.replace('R$ ', '').replace(',', '.')) + Number(preco2.replace('R$ ', '').replace(',', '.')) + Number(preco3.replace('R$ ', '').replace(',', '.'))).toFixed(2).toString().replace('.', ',');
 
@@ -60,8 +60,6 @@ function confirmarPedido() {
 }
 function voltarPedido() {
     document.querySelector(".confirmingOrder").classList.add("hidden");
-    item1.parentNode.classList.add("fecharPedido");
-    item2.parentNode.classList.add("fecharPedido");
 }
 function resumoPedido() {
     document.querySelector(".item1").innerHTML = item1;
@@ -75,6 +73,6 @@ function resumoPedido() {
 
 function fazerPedido() {
     let uri = "https://wa.me/55981264699?text="
-    let mensagem = `Olá, gostaria de fazer o pedido \t - Prato: ${item1} \t - Bebida: ${item2} \t - Sobremesa: ${item3} \t Total: ${precoTotal}`
-    window.location.href = uri + encodeURIComponent(mensagem);
+    let mensagem = `Olá, gostaria de fazer o pedido \t - Prato: ${item1} \t - Bebida: ${item2} \t - Sobremesa: ${item3} \t Total: ${precoTotal}`;
+    window.open(uri + encodeURIComponent(mensagem), '_blank', 'noopener,noreferrer');
 }
